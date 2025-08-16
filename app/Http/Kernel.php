@@ -6,26 +6,48 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    // Middleware سراسری برای همه درخواست‌ها (API و web)
+    /**
+     * Global HTTP middleware stack.
+     *
+     * These middleware are run during every request to your application.
+     */
     protected $middleware = [
-        // می‌تونی اینو خالی بذاری چون الان فقط API داری
+        // Laravel default middleware
+        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
-    // گروه middleware برای web و api
+    /**
+     * The application's route middleware groups.
+     */
     protected $middlewareGroups = [
         'web' => [
-            // چون الان فقط API داریم، می‌تونی خالی بذاری
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
         'api' => [
-            'throttle:api',  // محدودیت نرخ درخواست
+            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
-    // middleware های قابل فراخوانی در route
+    /**
+     * Route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
+     */
     protected $routeMiddleware = [
-        'auth' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

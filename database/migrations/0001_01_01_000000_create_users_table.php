@@ -11,10 +11,11 @@ return new class extends Migration {
             $table->id();
             $table->string('first_name')->default('');
             $table->string('last_name')->default('');
-            $table->string('phone')->nullable();
+            $table->string('phone')->unique();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false); // ثبت‌نام اولیه غیرفعال
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

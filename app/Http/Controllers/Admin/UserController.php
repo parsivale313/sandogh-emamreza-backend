@@ -16,12 +16,19 @@ class UserController extends Controller
     }
 
     // تایید کاربر
-    public function approve($id)
+    public function approveUser($id)
     {
         $user = User::findOrFail($id);
-        $user->is_active = true;
-        $user->save();
 
-        return response()->json(['message' => 'کاربر تایید شد']);
+        if ($user->active) {
+            return response()->json(['message' => 'کاربر قبلاً تایید شده است.'], 400);
+        }
+
+        $user->update([
+            'active' => true,
+            'approved_by' => auth()->id(),
+        ]);
+
+        return response()->json(['message' => 'کاربر تایید شد.']);
     }
 }

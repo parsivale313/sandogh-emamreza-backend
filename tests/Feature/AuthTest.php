@@ -46,9 +46,10 @@ class AuthTest extends TestCase
 
     public function test_active_user_can_login()
     {
-        $user = User::factory()->create([
+        User::factory()->create([
             'phone' => '09122222222',
             'password' => bcrypt('password123'),
+            'active' => true, // حتماً کاربر فعال
         ]);
 
         $response = $this->postJson('/api/login', [
@@ -57,7 +58,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['access_token', 'token_type']);
+                ->assertJsonStructure(['access_token', 'token_type']);
     }
 
     public function test_user_can_logout()

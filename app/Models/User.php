@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable ,HasFactory;
 
     protected $fillable = [
         'first_name',
@@ -17,6 +18,7 @@ class User extends Authenticatable
         'password',
         'is_admin',
         'active',
+        'approved_by',
     ];
 
     protected $hidden = [
@@ -28,4 +30,11 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
         'active' => 'boolean',
     ];
+
+    // رابطه برای ادمینی که تایید کرده
+    public function approvedByAdmin()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }
+

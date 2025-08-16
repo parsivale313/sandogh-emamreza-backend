@@ -9,15 +9,15 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // یک ادمین ایجاد کن
+        // یک ادمین دستی بساز (phone: 09123456789 ، pass: admin123)
         User::factory()->admin()->create([
-            'first_name' => 'Admin',
-            'last_name' => 'User',
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
             'phone' => '09123456789',
-            'email' => 'admin@example.com',
+            'password' => bcrypt('admin123'),
         ]);
 
-        // چند کاربر معمولی
-        User::factory(10)->create();
+        // چند یوزر نمونه (غیرفعال)
+        User::factory(5)->create();
     }
 }
